@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout1}">
+<head>
+    <meta charset="UTF-8">
+    <title>메인페이지</title>
+</head>
+<body>
+    <th:block layout:fragment="content">
+        <h1>메인 페이지 입니다.</h1>
+
+        <div class="row row-cols-1 mt-3 mb-4">
+            <img src="/잠옷짱구.jpg" class="img-fluid" alt="...">
+        </div>
+
+
+
+        <div class="row row-cols-1 mt-3 mb-4">
+            <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="true">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="/돌맹구.jpg" class="d-block w-100" alt="잠옷짱구">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="/chii.jpg" class="d-block w-100" alt="벌짱구">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="/흰둥이와짱구.png" class="d-block w-100" alt="흰둥이와짱구">
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="row row-cols-1">
+            <th:block th:each="itemDTO : ${responesPageDTO.dtoList}">
+                <div class="col col-md-3 col-sm-4 mb-3">
+                    <a th:href="@{/item/read(id=${itemDTO.id})}" style="text-decoration: none;">
+                        <div class="card">
+                            <p class="card-text" th:text="${itemDTO.id}"></p>
+                            <th:block th:if="${itemDTO.imageDTOList != null && !#lists.isEmpty(itemDTO.imageDTOList)}">
+                                <th:block th:each="imageDTO : ${itemDTO.imageDTOList}">
+                                    <img th:if="${imageDTO.repimgYn=='Y'}" th:src="${'/images/'+imageDTO.imgName}" class="card-img-top" alt="사진을 불러올 수 없습니다.">
+                                </th:block>
+                            </th:block>
+                            <div class="card-body">
+                                <h5 class="card-title" th:text="${#strings.length(itemDTO.itemNm) > 10 ? #strings.substring(itemDTO.itemNm,0,10)+'...':itemDTO.itemNm}"></h5>
+                                <p class="card-text" th:text="${itemDTO.price+' 원'}"></p>
+                                <p class="card-text" th:text="${#strings.length(itemDTO.itemDetail) > 15 ? #strings.substring(itemDTO.itemDetail,0,15)+'...' : itemDTO.itemDetail }"></p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </th:block>
+        </div>
+
+    </th:block>
+</body>
+</html>
