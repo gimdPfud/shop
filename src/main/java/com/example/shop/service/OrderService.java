@@ -26,6 +26,8 @@ public class OrderService {
     private final MembersRepository membersRepository;
     private final ItemRepository itemRepository;
 
+    /*주석주석*/
+
     /*todo 주문*/
     public Long order(OrderDTO orderDTO, String email){
         /*참조될 item엔티티 찾기*/
