@@ -49,7 +49,7 @@ public class ItemSearchImpl extends QuerydslRepositorySupport implements ItemSea
                     booleanBuilder.or(item.price.gt(Integer.parseInt(keyword)));
                 }else if (type.equals("n")){ // 내용
                     booleanBuilder.or(item.itemNm.contains(keyword));
-                }else if (type.equals("d")){ // 작성자
+                }else if (type.equals("d")){ // 작성자q
                     booleanBuilder.or(item.itemDetail.contains(keyword));
                 }
                 else if (type.equals("s")){ // 작성자

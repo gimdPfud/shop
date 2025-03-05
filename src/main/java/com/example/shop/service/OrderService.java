@@ -68,38 +68,40 @@ public class OrderService {
     /*todo 주문내역*/
     public ResponesPageDTO getOrderList(String email, RequestPageDTO requestPageDTO){
         Page<Orders> ordersPage = orderRepository.findOrders(email,requestPageDTO.getPageable("id"));
-        /*이게 주문목록!*/
+        /*이메일이 같은 데이터들을, 아이디"id"를 기준으로 페이징 처리해서, 페이지 ordersPage로 만들기.*/
 
-        /*주문목록을 리스트화*/
+        /*페이지 ordersPage를 리스트로 만들기.*/
         List<Orders> ordersList = ordersPage.getContent();
 
-        /*DTO로 변환하기 시작~~.*/
+        /*웹에 찍어주기위한 주문목록DTO 리스트를 만든다.*/
         List<OrderHistDTO> orderHistDTOList = new ArrayList<>();
 
-        for (Orders orders : ordersList) {//주문목록에서 하나씩 읽음.
+        for (Orders orders : ordersList) {//DB에서 가져온 주문목록에서 하나씩 읽음.
 
-            /*주문목록의 주문 하나를 가져와서 주문내역DTO에 담음.*/
+            /*DB주문목록의 주문 하나를 가져와서 주문내역DTO에 담음.*/
             OrderHistDTO orderHistDTO = new OrderHistDTO(orders); //뷰 페이지로 갈 객체. dtoList.
 
-            /*주문아이템들을 꺼내와서 DTO로 변환.*/
-
-            /*주문에서 주문아이템들을 가져옴.*/
+            /*주문한 상품 리스트orderitemList를 가져온다.*/
             List<Orderitem> orderitemList = orders.getOrderitemList();
 
-            /*주문 아이템리스트에서...대표이미지를 가져올것임.*/
             for (Orderitem orderitem : orderitemList) {
-                /*주문아이템 안의 > 아이템 안의 > 이미지리스트를 가져온다.*/
+                /*주문상품orderitem 안의 > 상품item 안의 > 이미지리스트ImageList를 가져온다.*/
                 List<Image> imageList = orderitem.getItem().getImageList();
+                //주문한 상품의 모든 사진 가져오기.
+
                 for (Image image : imageList) {
                     if(image.getRepimgYn()!=null && image.getRepimgYn().equals("Y")){
                         /*이미지리스트에서 하나씩 읽어와서 대표이미지만 거름.*/
+                        //주문한 상품의 대표이미지 = image
 
-                        /*주문아이템DTO로 변환한다!(DTO에서 만들었던 그거. modelmapper를 안쓸라면 이렇게 복잡하구나...)*/
+                        /*주문상품DTO로 변환한다!(DTO에서 만들었던 그거.)
+                        * 이거 하려고 for문 여러개 깠던듯..*/
                         OrderitemDTO orderitemDTO =
-                                new OrderitemDTO(orderitem, image.getImgUrl()+image.getImgName());
+                                new OrderitemDTO(orderitem, image.getImgName());
 
                         /*주문내역DTO에 주문아이템DTO도 넣었다.*/
                         orderHistDTO.addOrderitemDto(orderitemDTO);
+                        orderHistDTOList.add(orderHistDTO);
                     }
                 }
             }

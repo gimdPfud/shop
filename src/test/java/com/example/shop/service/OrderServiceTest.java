@@ -9,8 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 @Log4j2
 class OrderServiceTest {
@@ -22,8 +20,13 @@ class OrderServiceTest {
     public void list(){
         RequestPageDTO requestPageDTO = new RequestPageDTO();
 
-        ResponesPageDTO<OrderHistDTO> responesPageDTO = orderService.getOrderList("tofu@a.a",requestPageDTO);
+        ResponesPageDTO<OrderHistDTO> responesPageDTO =
+                orderService.getOrderList("tofu@a.a",requestPageDTO);
 
-        responesPageDTO.getDtoList().forEach(orderHistDTO -> log.info(orderHistDTO));
+        if(responesPageDTO.getDtoList()==null){
+            log.info("주문 목록이 없습니다.");
+        }else{
+            responesPageDTO.getDtoList().forEach(orderHistDTO -> log.info(orderHistDTO));
+        }
     }
 }

@@ -23,6 +23,7 @@ public class SecurityConfig {
                         (AuthorizeHttpRequests) -> AuthorizeHttpRequests
                                 .requestMatchers("/", "/user/login/**", "/user/signUp", "/css/**", "/js/**").permitAll()/*해당 url은 모두 접속 가능*/
                                 .requestMatchers("/admin/item/**").hasRole("ADMIN")
+                                .requestMatchers("/orders/**").authenticated() /*로그인이 되어있어야만 하는 주소.*/
                         /*.anyrequest().autho어쩌고?*/
                                 .anyRequest().permitAll()
                 )
