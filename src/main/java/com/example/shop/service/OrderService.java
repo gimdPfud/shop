@@ -97,7 +97,7 @@ public class OrderService {
                         /*주문상품DTO로 변환한다!(DTO에서 만들었던 그거.)
                         * 이거 하려고 for문 여러개 깠던듯..*/
                         OrderitemDTO orderitemDTO =
-                                new OrderitemDTO(orderitem, image.getImgUrl()+image.getImgName());
+                                new OrderitemDTO(orderitem, image.getImgName());
 
                         /*주문내역DTO에 주문아이템DTO도 넣었다.*/
                         orderHistDTO.addOrderitemDto(orderitemDTO);
